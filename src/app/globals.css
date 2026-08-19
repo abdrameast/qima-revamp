@@ -1,0 +1,740 @@
+@import "tailwindcss";
+@import "./lufga.generated.css";
+
+/* --------------------------------------------------------------------------
+   LUFGA — activation par simple dépôt de fichiers
+   --------------------------------------------------------------------------
+   Fonte commerciale, non distribuée dans ce dépôt.
+
+   Les déclarations `@font-face` sont GÉNÉRÉES par
+   `scripts/generate-font-css.ts` (exécuté avant dev et build) et n'incluent
+   que les graisses réellement présentes dans `public/fonts/`. Déclarer les
+   cinq en dur émettrait cinq 404 par chargement de page tant que la police
+   est absente.
+
+   Pour activer Lufga : déposer les .woff2 dans public/fonts/, rien d'autre.
+   Voir `public/fonts/README.md`.
+   -------------------------------------------------------------------------- */
+
+
+/* ==========================================================================
+   SYSTÈME DE DESIGN — QIMA × HONEYLANG
+   --------------------------------------------------------------------------
+   Identité : bordeaux profond #23161E, or #C5A76A, mauve sourd #9C7D8C.
+
+   Composition : coque bordeaux profonde, surfaces de données en **verre
+   dépoli clair**. Le verre est teinté clair et non sombre — un tableau de
+   dix colonnes de montants doit rester lisible en réunion. L'opacité de 0,86
+   n'est pas un réglage esthétique : c'est le seuil en dessous duquel les tons
+   de texte secondaires passent sous 4,5:1 une fois composités sur le fond.
+
+   Contraste : `npm run design:contrast` vérifie chaque paire, y compris les
+   couleurs **composées** derrière le verre. Ne pas ajouter de couleur sans
+   l'ajouter à ce contrôle.
+   ========================================================================== */
+
+@theme {
+  /* ---------------------------------------------------------------------
+     1. COULEURS DE MARQUE — valeurs imposées par la charte
+     --------------------------------------------------------------------- */
+  --color-bordeaux: #23161e;
+  --color-gold: #c5a76a;
+  --color-mauve: #9c7d8c;
+
+  /* ---------------------------------------------------------------------
+     2. COQUE SOMBRE
+     `--color-canvas` est le point le plus sombre du fond : c'est lui qui
+     sert de référence au calcul de contraste derrière le verre.
+     --------------------------------------------------------------------- */
+  --color-canvas: #1b1016;
+  --color-canvas-raised: #23161e;
+  --color-surface: #2c1d26;
+  --color-surface-raised: #36242f;
+  --color-surface-strong: #412c38;
+
+  /* ---------------------------------------------------------------------
+     3. VERRE
+     --------------------------------------------------------------------- */
+  /* Verre — blanc à très faible opacité sur la coque sombre.
+     L'effet ne vient PAS de l'opacité du fond (0,08 seulement) mais du flou,
+     de la saturation et de l'arête lumineuse. Un verre réellement
+     transparent laisse voir les halos qui défilent derrière lui. */
+  --color-glass: rgb(255 255 255 / 0.08);
+  --color-glass-strong: rgb(255 255 255 / 0.13);
+  --color-glass-soft: rgb(255 255 255 / 0.045);
+  --color-glass-dark: rgb(255 255 255 / 0.055);
+  --color-glass-dark-strong: rgb(255 255 255 / 0.10);
+
+  /* Arêtes : c'est le liseré blanc qui fait lire la tranche du verre. */
+  --color-glass-edge: rgb(255 255 255 / 0.16);
+  --color-glass-edge-dark: rgb(255 255 255 / 0.10);
+  --color-glass-highlight: rgb(255 255 255 / 0.34);
+
+  /* Surfaces opaques, conservées pour l'impression et les replis. */
+  --color-paper: #faf7f8;
+  --color-paper-alt: #f1eaed;
+
+  /* ---------------------------------------------------------------------
+     4. TEXTE
+     --------------------------------------------------------------------- */
+  /* sur coque sombre */
+  --color-cream: #f7f1f3;
+  --color-cream-muted: #c6aeb8;
+  --color-cream-faint: #bca1ad;
+
+  /* Le verre étant transparent sur fond sombre, le texte des données est
+     CLAIR. Les jetons `ink-*` restent définis : ils servent à l'impression,
+     où le verre redevient blanc opaque. */
+  --color-ink: #f7f1f3;
+  --color-ink-muted: #ccb4be;
+  --color-ink-faint: #bca1ad;
+
+  /* Encre réelle — impression et replis opaques uniquement. */
+  --color-ink-print: #23161e;
+  --color-ink-print-muted: #5e4a55;
+
+  /* ---------------------------------------------------------------------
+     5. OR
+     --------------------------------------------------------------------- */
+  --color-gold-bright: #d8be8c;
+  /* Sur verre transparent, l'accent doit être CLAIR pour ressortir.
+     `gold-deep` conserve sa valeur sombre pour l'impression. */
+  --color-gold-deep: #d5bc8a;
+  --color-gold-print: #755928;
+
+  /* ---------------------------------------------------------------------
+     6. BORDURES
+     --------------------------------------------------------------------- */
+  --color-line: #3a2a33;
+  --color-line-strong: #4d3745;
+  --color-rule: rgb(255 255 255 / 0.10);
+  --color-rule-strong: rgb(255 255 255 / 0.18);
+
+  /* ---------------------------------------------------------------------
+     7. SÉMANTIQUE FINANCIÈRE
+     Réservée au sens. Jamais décorative.
+     --------------------------------------------------------------------- */
+  --color-positive: #7cc08d;
+  --color-caution: #e0b25c;
+  --color-critical: #ee8a8a;
+
+  /* Sur verre transparent, la sémantique reprend les tons « fond sombre ».
+     Les variantes `-print` servent à l'impression. */
+  --color-positive-ink: #7cc08d;
+  --color-caution-ink: #e0b25c;
+  --color-critical-ink: #ee8a8a;
+
+  --color-positive-print: #2f6b3f;
+  --color-caution-print: #6e4b0c;
+  --color-critical-print: #9b2626;
+
+  --color-positive-soft: rgb(124 192 141 / 0.16);
+  --color-caution-soft: rgb(224 178 92 / 0.16);
+  --color-critical-soft: rgb(238 138 138 / 0.15);
+
+  /* ---------------------------------------------------------------------
+     8. TYPOGRAPHIE
+     --------------------------------------------------------------------- */
+  --font-sans: "Lufga", var(--font-outfit), ui-sans-serif, system-ui,
+    -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font-sans);
+  --font-numeric: var(--font-sans);
+
+  /* ---------------------------------------------------------------------
+     9. RAYONS — plus généreux qu'en design plat : le verre a besoin de
+     courbure pour que l'arête lumineuse se lise.
+     --------------------------------------------------------------------- */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+
+  /* ---------------------------------------------------------------------
+     10. OMBRES
+     --------------------------------------------------------------------- */
+  --shadow-subtle: 0 1px 2px rgb(15 8 12 / 0.16);
+  --shadow-card: 0 2px 8px rgb(15 8 12 / 0.2), 0 1px 2px rgb(15 8 12 / 0.12);
+  --shadow-raised: 0 12px 32px rgb(15 8 12 / 0.3), 0 2px 8px rgb(15 8 12 / 0.18);
+  --shadow-overlay: 0 24px 64px rgb(15 8 12 / 0.5), 0 4px 12px rgb(15 8 12 / 0.3);
+  --shadow-glow-gold: 0 0 0 1px rgb(197 167 106 / 0.28), 0 8px 28px rgb(197 167 106 / 0.16);
+
+  /* ---------------------------------------------------------------------
+     11. MOUVEMENT
+     `--ease-glass` a une décélération longue : le mouvement s'arrête sans
+     rebond, ce qui donne au verre son poids apparent.
+     --------------------------------------------------------------------- */
+  --ease-glass: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+
+  --duration-instant: 110ms;
+  --duration-quick: 180ms;
+  --duration-calm: 300ms;
+  --duration-slow: 520ms;
+
+  /* ---------------------------------------------------------------------
+     12. FLOU DE FOND
+     --------------------------------------------------------------------- */
+  --blur-glass: 28px;
+  --blur-glass-heavy: 44px;
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+
+@layer base {
+  html {
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-cream);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    /* Empêche un rebond de fond blanc en fin de défilement élastique. */
+    overscroll-behavior-y: none;
+  }
+
+  /* Halos de fond — deux nappes très diffuses qui donnent au verre quelque
+     chose à réfracter. Sans elles, le flou n'a aucun relief à révéler.
+     Fixées, donc gratuites au défilement, et décoratives donc masquées. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: -20%;
+    z-index: -1;
+    pointer-events: none;
+    /* Ramenés de 0,13–0,18 à 0,11 : au-delà, ce sont eux qui dictaient le
+       plancher de contraste du texte vu au travers du verre. */
+    background:
+      radial-gradient(70rem 50rem at 12% -8%, rgb(197 167 106 / 0.11), transparent 60%),
+      radial-gradient(60rem 45rem at 88% 8%, rgb(156 125 140 / 0.11), transparent 62%),
+      radial-gradient(50rem 40rem at 50% 108%, rgb(107 26 46 / 0.14), transparent 60%);
+    /* Dérive très lente : le verre a alors quelque chose de *mouvant* à
+       réfracter. 48 s par cycle — perceptible sans jamais attirer l'œil.
+       Seul `transform` est animé, donc entièrement sur le compositeur. */
+    animation: drift 48s var(--ease-out-soft) infinite alternate;
+    will-change: transform;
+  }
+
+  @keyframes drift {
+    0% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    50% {
+      transform: translate3d(2.5%, -1.5%, 0) scale(1.06);
+    }
+    100% {
+      transform: translate3d(-2%, 2%, 0) scale(1.03);
+    }
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs);
+  }
+
+  .tabular,
+  th[data-numeric],
+  td[data-numeric] {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+  }
+
+  .no-break {
+    white-space: nowrap;
+  }
+
+  ::selection {
+    background-color: var(--color-gold);
+    color: var(--color-bordeaux);
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line-strong) transparent;
+  }
+}
+
+/* ==========================================================================
+   VERRE
+   ========================================================================== */
+
+@layer components {
+  /* ---------------------------------------------------------------------
+     VERRE
+     ---------------------------------------------------------------------
+     La transparence ne vient pas d'un fond pâle : le fond n'est qu'à 8 %
+     d'opacité. Ce qui fait lire « verre », c'est la combinaison de
+     quatre choses :
+       1. un dégradé diagonal très léger, qui simule la réfraction ;
+       2. un flou de fond appuyé, qui détache la surface de ce qu'il y a
+          derrière ;
+       3. une saturation poussée, qui ravive les halos vus au travers ;
+       4. une arête blanche en haut, qui donne son épaisseur à la tranche.
+     --------------------------------------------------------------------- */
+
+  .glass {
+    background-image: linear-gradient(
+      135deg,
+      rgb(255 255 255 / 0.11) 0%,
+      rgb(255 255 255 / 0.045) 44%,
+      rgb(255 255 255 / 0.08) 100%
+    );
+    backdrop-filter: blur(32px) saturate(165%);
+    border: 1px solid var(--color-glass-edge);
+    box-shadow:
+      0 10px 36px rgb(10 5 8 / 0.34),
+      0 2px 8px rgb(10 5 8 / 0.2),
+      inset 0 1px 0 var(--color-glass-highlight),
+      inset 0 -1px 0 rgb(255 255 255 / 0.05);
+  }
+
+  /* Verre de coque — navigation, en-tête. Plus discret pour ne pas
+     concurrencer les surfaces de données. */
+  .glass-dark {
+    background-image: linear-gradient(
+      160deg,
+      rgb(255 255 255 / 0.07) 0%,
+      rgb(255 255 255 / 0.03) 100%
+    );
+    backdrop-filter: blur(36px) saturate(150%);
+    border: 1px solid var(--color-glass-edge-dark);
+    box-shadow:
+      0 8px 28px rgb(10 5 8 / 0.28),
+      inset 0 1px 0 rgb(255 255 255 / 0.14);
+  }
+
+  /* ---------------------------------------------------------------------
+     REFLET SPÉCULAIRE
+     ---------------------------------------------------------------------
+     Une bande claire traverse la surface au survol.
+
+     Fluidité : seul `transform` est animé, sur un pseudo-élément promu en
+     couche de composition (`will-change`). Le compositeur du navigateur
+     l'anime alors sans repasser par le fil principal — le mouvement tient
+     les 60 ips (ou plus) même pendant un recalcul React.
+     --------------------------------------------------------------------- */
+
+  .glass-sheen {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .glass-sheen::after {
+    content: "";
+    position: absolute;
+    inset: -40% -10%;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+      104deg,
+      transparent 34%,
+      rgb(255 255 255 / 0.1) 44%,
+      rgb(255 255 255 / 0.26) 50%,
+      rgb(255 255 255 / 0.1) 56%,
+      transparent 66%
+    );
+    /* `translate3d` force la promotion en couche GPU. */
+    transform: translate3d(-130%, 0, 0);
+    will-change: transform;
+    transition: transform 720ms var(--ease-glass);
+  }
+
+  .glass-sheen:hover::after,
+  .glass-sheen:focus-visible::after {
+    transform: translate3d(130%, 0, 0);
+  }
+
+  /* Repli sans `backdrop-filter` : sans flou, une surface à 8 % laisserait
+     lire le fond au travers du texte. On la rend nettement plus dense. */
+  @supports not (backdrop-filter: blur(1px)) {
+    .glass {
+      background-color: rgb(58 44 52 / 0.97);
+      background-image: none;
+    }
+    .glass-dark {
+      background-color: rgb(38 25 33 / 0.97);
+      background-image: none;
+    }
+  }
+
+  /* Libellé de section. */
+  .section-label {
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
+
+  /* Titres — resserrés, car Lufga et Outfit sont déjà larges. */
+  .display {
+    font-family: var(--font-display);
+    letter-spacing: -0.022em;
+    font-feature-settings: "ss01" 1;
+  }
+
+  .sr-only-focusable:not(:focus):not(:focus-within) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* ==========================================================================
+   ANIMATIONS
+   ========================================================================== */
+
+@layer utilities {
+  /* --- Entrée en scène ------------------------------------------------- */
+
+  @keyframes rise-in {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 14px, 0) scale(0.985);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide-in-left {
+    from {
+      opacity: 0;
+      transform: translate3d(-12px, 0, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  /* Apparition d'un panneau de verre : le flou se resserre en même temps
+     que l'opacité monte, comme une mise au point. */
+  @keyframes glass-in {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 16px, 0) scale(0.97);
+      filter: blur(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+      filter: blur(0);
+    }
+  }
+
+  .animate-rise {
+    animation: rise-in var(--duration-calm) var(--ease-glass) both;
+  }
+
+  .animate-fade {
+    animation: fade-in var(--duration-calm) var(--ease-out-soft) both;
+  }
+
+  .animate-slide-left {
+    animation: slide-in-left var(--duration-calm) var(--ease-glass) both;
+  }
+
+  .animate-glass-in {
+    animation: glass-in var(--duration-slow) var(--ease-glass) both;
+  }
+
+  /* Décalage en cascade. Les cartes arrivent en séquence plutôt qu'en bloc :
+     l'œil suit la grille au lieu de la subir. Plafonné à 8 pour que le
+     dernier élément n'attende jamais plus de ~320 ms. */
+  .stagger > * {
+    animation: rise-in var(--duration-calm) var(--ease-glass) both;
+  }
+  .stagger > *:nth-child(1) { animation-delay: 0ms; }
+  .stagger > *:nth-child(2) { animation-delay: 45ms; }
+  .stagger > *:nth-child(3) { animation-delay: 90ms; }
+  .stagger > *:nth-child(4) { animation-delay: 135ms; }
+  .stagger > *:nth-child(5) { animation-delay: 180ms; }
+  .stagger > *:nth-child(6) { animation-delay: 225ms; }
+  .stagger > *:nth-child(7) { animation-delay: 270ms; }
+  .stagger > *:nth-child(n + 8) { animation-delay: 315ms; }
+
+  /* --- Survol et pression ---------------------------------------------- */
+
+  .lift {
+    transition:
+      transform var(--duration-quick) var(--ease-glass),
+      box-shadow var(--duration-quick) var(--ease-glass),
+      border-color var(--duration-quick) var(--ease-glass);
+    will-change: transform;
+  }
+
+  .lift:hover {
+    transform: translate3d(0, -3px, 0);
+    box-shadow: var(--shadow-raised), inset 0 1px 0 rgb(255 255 255 / 0.9);
+  }
+
+  .lift:active {
+    transform: translate3d(0, -1px, 0);
+    transition-duration: var(--duration-instant);
+  }
+
+  .press {
+    transition: transform var(--duration-instant) var(--ease-glass);
+  }
+
+  .press:active {
+    transform: scale(0.972);
+  }
+
+  /* --- Transition de vue : blobs fluides -------------------------------
+     Au changement de section, deux nappes colorées se dilatent puis se
+     dissipent. Elles couvrent le remplacement du contenu, qui autrement
+     apparaîtrait d'un coup.
+
+     Tout est en `transform` + `opacity` : aucune propriété ne déclenche de
+     recalcul de mise en page, l'animation reste sur le compositeur.
+     --------------------------------------------------------------------- */
+
+  @keyframes blob-bloom {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, 18%, 0) scale(0.35);
+    }
+    35% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(0, -12%, 0) scale(1.9);
+    }
+  }
+
+  @keyframes blob-bloom-alt {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, 22%, 0) scale(0.28);
+    }
+    45% {
+      opacity: 0.9;
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(6%, -16%, 0) scale(2.2);
+    }
+  }
+
+  .animate-blob {
+    animation: blob-bloom 900ms var(--ease-glass) both;
+  }
+
+  .animate-blob-alt {
+    animation: blob-bloom-alt 1100ms var(--ease-glass) both;
+  }
+
+  /* Le contenu de la page entre juste derrière les blobs. */
+  @keyframes view-enter {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 12px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .animate-view-enter {
+    animation: view-enter 420ms var(--ease-glass) both;
+  }
+
+  /* --- Indicateurs ------------------------------------------------------ */
+
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.45; }
+  }
+
+  .animate-pulse-soft {
+    animation: pulse-soft 2.4s var(--ease-out-soft) infinite;
+  }
+
+  /* Barre de progression qui se déploie depuis la gauche. */
+  @keyframes grow-x {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+
+  .animate-grow-x {
+    transform-origin: left center;
+    animation: grow-x var(--duration-slow) var(--ease-glass) both;
+  }
+
+  /* Balayage de chargement, plus élégant qu'une opacité clignotante. */
+  @keyframes shimmer {
+    from { background-position: -200% 0; }
+    to { background-position: 200% 0; }
+  }
+
+  .animate-shimmer {
+    background-image: linear-gradient(
+      90deg,
+      rgb(255 255 255 / 0.05) 25%,
+      rgb(255 255 255 / 0.13) 50%,
+      rgb(255 255 255 / 0.05) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.6s linear infinite;
+  }
+}
+
+/* ==========================================================================
+   MOUVEMENT RÉDUIT
+   Tout est neutralisé : animations, transitions, et le reflet spéculaire.
+   Les états finaux restent appliqués — rien ne disparaît.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .glass-sheen::after {
+    display: none;
+  }
+
+  .lift:hover,
+  .press:active {
+    transform: none;
+  }
+}
+
+/* ==========================================================================
+   IMPRESSION — synthèse exécutive
+   Le verre n'existe pas sur papier : tout redevient opaque, blanc, encadré.
+   ========================================================================== */
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 14mm 12mm;
+  }
+
+  /* Neutralise toute animation d'entrée.
+     Les animations démarrent à `opacity: 0` avec `fill-mode: both`. Or le
+     moteur d'impression ne fait pas avancer la timeline : sans cette règle,
+     les cartes s'imprimeraient **vides**, figées sur leur image de départ.
+     C'est le cas concret qui rend cette précaution nécessaire — la synthèse
+     exécutive en PDF est une fonctionnalité documentée de l'application. */
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  body::before {
+    display: none !important;
+  }
+
+  .no-print,
+  nav[data-app-nav],
+  [data-print-hide] {
+    display: none !important;
+  }
+
+  [data-print-full] {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  /* Le texte de l'interface est CLAIR (verre transparent sur coque sombre).
+     À l'impression, la coque disparaît : sans cette règle, on imprimerait du
+     crème sur du blanc, soit une page vierge. On force donc l'encre foncée
+     sur tout, y compris les tons sémantiques. */
+  *,
+  *::before,
+  *::after {
+    color: #000000 !important;
+    border-color: #999999 !important;
+  }
+
+  /* Neutralise le verre : sans cela, `backdrop-filter` produit des aplats
+     gris imprévisibles à l'impression. */
+  .glass,
+  .glass-dark,
+  [data-print-block] {
+    background: #ffffff !important;
+    background-image: none !important;
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .glass-sheen::after {
+    display: none !important;
+  }
+
+  [data-print-invert] {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border-color: #999999 !important;
+  }
+
+  [data-print-break-before] {
+    break-before: page;
+  }
+
+  table {
+    break-inside: auto;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tr {
+    break-inside: avoid;
+  }
+
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.7em;
+    color: #555555;
+  }
+}

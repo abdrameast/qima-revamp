@@ -1,0 +1,15 @@
+# Normalise les fins de ligne : ce dépôt est édité sous Windows et construit
+# sous Linux. Sans cela, les fichiers arrivent en CRLF sur le CI et certains
+# outils (scripts shell, diff) se comportent différemment.
+* text=auto eol=lf
+
+# Fichiers binaires — jamais convertis.
+*.png    binary
+*.jpg    binary
+*.ico    binary
+*.woff   binary
+*.woff2  binary
+*.ttf    binary
+*.otf    binary
+*.xlsx   binary
+*.pdf    binary
